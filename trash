@@ -4,7 +4,7 @@
 if [ "X$@" != "X" ]
 	then
 	mv "$@" ~/.trash/
-	echo "$@ moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1) in size."
+	echo "$@ moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
 	else
 	echo "Your trash is currently $(du -h ~/.trash | cut -f1) in size."
 fi
