@@ -1,0 +1,11 @@
+#!/bin/sh
+# remove contents of ~/.trash
+ARG="$1"
+
+if [ "X$ARG" == "X-v" ]
+	then
+	rm -rvf ~/.trash/*
+	else
+	rm -rf ~/.trash/*
+fi
+	echo "Your trash is now empty."

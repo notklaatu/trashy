@@ -1,11 +1,21 @@
 #!/bin/bash
+ARG="$@"
 
-
-if [ "X$@" != "X" ]
-	then
-	mv "$@" ~/.trash/
-	echo "$@ moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
-	else
-	echo "Your trash is currently $(du -h ~/.trash | cut -f1) in size."
+CHECK=$(ls -a ~ | grep .trash)
+if [ "X$CHECK" == "X" ]
+	then mkdir ~/.trash
 fi
 
+if [ "X$ARG" == "X.trash" ]
+	then 
+	echo "You cannot trash the .trash"
+	echo "Try issuing the command /bin/rm -rf ~/.trash instead."
+	else
+	if [ "X$ARG" != "X" ]
+		then
+		mv "$ARG" ~/.trash/
+		echo "$ARG moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
+		else
+		echo "Your trash is currently $(du -h ~/.trash | cut -f1) in size."
+	fi
+fi
