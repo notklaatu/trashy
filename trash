@@ -1,7 +1,7 @@
 #!/bin/bash
 ARG="$@"
 
-CHECK=$(ls -a ~ | grep .trash)
+CHECK=$(ls -a ~ | grep -i .trash)
 if [ "X$CHECK" == "X" ]
 	then mkdir ~/.trash
 fi
@@ -14,7 +14,8 @@ if [ "X$ARG" == "X.trash" ]
 	if [ "X$ARG" != "X" ]
 		then
 		mv "$ARG" ~/.trash/
-		echo "$ARG moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
+		RETURN=$(basename $ARG)
+		echo "$RETURN moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
 		else
 		echo "Your trash is currently $(du -h ~/.trash | cut -f1) in size."
 	fi
