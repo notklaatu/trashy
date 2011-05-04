@@ -13,7 +13,7 @@ if [ "X$ARG" == "X.trash" ]
 	else
 	if [ "X$ARG" != "X" ]
 		then
-		mv "$ARG" ~/.trash/
+		mv $ARG ~/.trash/
 		RETURN=$(basename $ARG)
 		echo "$RETURN moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
 		else
