@@ -14,8 +14,15 @@ if [ "X$ARG" == "X.trash" ]
 	if [ "X$ARG" != "X" ]
 		then
 		mv $ARG ~/.trash/
-		RETURN=$(basename $ARG)
-		echo "$RETURN moved to Trash.  Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
+		# useless user friendly reassuring fluffy stuff
+		RETURN=$(basename $ARG 2> /dev/null)
+		if [ "X$2" != "X" ]
+			then echo "Multiple files have been moved to the trash."
+			else
+			echo "$RETURN has been moved to the trash."	
+		fi
+
+		echo "Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
 		else
 		echo "Your trash is currently $(du -h ~/.trash | cut -f1) in size."
 	fi
