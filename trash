@@ -2,8 +2,8 @@
 ARG="$@"
 
 CHECK=$(ls -a ~ | grep -i .trash)
-if [ ! -d "~/.trash" ]
-	then mkdir -m 700 ~/.trash 2> /dev/null
+if [ ! -d " " ]
+	then mkdir -m 700 ~/.trash
 fi
 
 if [ "X$ARG" == "X.trash" ]
