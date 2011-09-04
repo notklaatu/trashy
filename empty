@@ -4,8 +4,8 @@ ARG="$1"
 
 if [ "X$ARG" == "X-v" ]
 	then
-	rm -rvf ~/.trash/*
+	/bin/rm -rvf ~/.trash/*
 	else
-	rm -rf ~/.trash/*
+	/bin/rm -rf ~/.trash/*
 fi
 	echo "Your trash is now empty."
