@@ -1,0 +1,74 @@
+1. Introduction
+
+Hi! right now you're looking at trashy, the sane rm intermediary.
+This means that you've probably just done the unthinkable:
+accidentally rm'd a super important file by accident and immediately
+thereafter started cursing God, UNIX, GNU, computers, and yourself.
+
+Never fear.  There is hope.
+
+
+2. Usage
+
+Trashy is a simple shell script that introduces the idea of a trash
+can for the command line.  Meaning that you can issue this command:
+
+trash foo
+
+and foo will be moved to ~/.trash
+
+Simple as that.  When you're really really sure that everything in
+your .trash folder wants to be nuked out of existance, then you can
+issue the command:
+
+empty
+
+and your .trash will be emptied.
+
+
+3. Aliases
+
+To help myself ease into the concept of the trash command, I literally
+had to alias rm to trash for a while.  This works quite well, in
+truth; and if you ever want to override your alias, simply use:
+
+\rm foo
+
+or
+
+/bin/rm foo
+
+Simple as that.
+
+But until your muscle memory gets used to the idea that it's going to
+be typing 'trash' instead of 'rm' when you want to delete a file, the
+alias helps.  To have an alias installed along with trashy, simple
+uncomment the alias block in the install.sh script.
+
+
+4. System Integration
+
+I plan on integration trashy with the freedesktop.org Trash
+
+http://www.ramendik.ru/docs/trashspec.html
+
+But for now, we have the hack you see now.
+
+
+5. Why trashy?
+
+Trashy is BASHy, meaning that it's really really portable.  It can be
+installed easily on GNU Linux, freeBSD, and Mac OS X.  Probably more,
+but these are the systems I have tried it on.  In all three cases,
+there are no real dependencies (except BASH on BSD but that's not so
+terribly uncommon).
+
+It's simple, but it works well and it works on lots of systems.
+That's good enough for me.
+
+Similar projects do exist.  The one I know of uses Python and has some
+really neat and fancy features and probably already conforms to Free
+Desktop specs.  Check it out if you're on a Linux box or if you don't
+mind a bit of set-up on non Free Desktop UNIX systems.
+
+http://code.google.com/p/trash-cli/
