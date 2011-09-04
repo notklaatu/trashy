@@ -9,13 +9,14 @@ fi
 if [ "X$ARG" == "X.trash" ]
 	then 
 	echo "You cannot trash the .trash"
-	echo "Try issuing the command /bin/rm -rf ~/.trash instead."
+	echo "Use the empty command to empty the trash."	
+	echo "Or use /bin/rm -rf ~/.trash if you are trying to delete the .trash folder."
 	else
 	if [ "X$ARG" != "X" ]
 		then
-		mv $ARG ~/.trash/
+		mv -b "$ARG" ~/.trash/"$ARG"_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1
 		# useless user friendly reassuring fluffy stuff
-		RETURN=$(basename $ARG 2> /dev/null)
+		RETURN="$ARG"
 		if [ "X$2" != "X" ]
 			then echo "Multiple files have been moved to the trash."
 			else
