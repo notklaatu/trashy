@@ -21,8 +21,10 @@ ARG="$1"
 
 if [ "X$ARG" == "X-v" ]
 	then
-	/bin/rm -rvf ~/.trash/*
+	/bin/rm -rvf ~/.trash/* 2> /dev/null
+	/bin/rm -rvf ~/.trash/.* 2> /dev/null
 	else
-	/bin/rm -rf ~/.trash/*
+	/bin/rm -rf ~/.trash/* 2> /dev/null
+	/bin/rm -rf ~/.trash/.* 2> /dev/null
 fi
 	echo "Your trash is now empty."

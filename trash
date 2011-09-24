@@ -32,7 +32,7 @@ if [ "X$ARG" == "X.trash" ]
 	else
 	if [ "X$ARG" != "X" ]
 		then
-		mv -b "$ARG" ~/.trash/"$ARG"_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1
+		for junk in $ARG; do mv -b $junk ~/.trash/$junk_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1 ; done
 		# useless user friendly reassuring fluffy stuff
 		RETURN="$ARG"
 		if [ "X$2" != "X" ]
