@@ -70,7 +70,14 @@ I would love to integrate trashy with the freedesktop.org Trash
 
 http://www.ramendik.ru/docs/trashspec.html
 
-But for now, we have the hack you see now.
+There is an easy way to hack into the System Trash, though.
+On KDE4 or Gnome3, simply edit the trash script in a text 
+editor; the very first line after the GPLv3 notice sets the $BASKET 
+variable to ~/.trash, so change that to ~/.local/share/Trash/files 
+and then install.  
+
+You can also make that change post-install, but you'll need 
+root permissions.
 
 
 6. Why trashy?
