@@ -19,12 +19,14 @@ ARG="$@"
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-CHECK=$(ls -a ~ | grep -i .trash)
+BASKET=~/.trash
+
+CHECK=$(ls -a ~ | grep -i $BASKET)
 if [ ! -d " " ]
-	then mkdir -m 700 ~/.trash 2> /dev/null
+	then mkdir -m 700 $BASKET 2> /dev/null
 fi
 
-if [ "X$ARG" == "X.trash" ]
+if [ "X$ARG" == "X$BASKET" ]
 	then 
 	echo "You cannot trash the .trash"
 	echo "Use the empty command to empty the trash."	
@@ -32,8 +34,8 @@ if [ "X$ARG" == "X.trash" ]
 	else
 	if [ "X$ARG" != "X" ]
 		then
-		for junk in $ARG; do mv -b $junk ~/.trash/$junk_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1 ; done
-		# useless user friendly reassuring fluffy stuff
+		for junk in $ARG; do mv -b $junk $BASKET/$junk_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1 ; done
+		# user friendly reassuring fluffy stuff
 		RETURN="$ARG"
 		if [ "X$2" != "X" ]
 			then echo "Multiple files have been moved to the trash."
@@ -41,8 +43,8 @@ if [ "X$ARG" == "X.trash" ]
 			echo "$RETURN has been moved to the trash."	
 		fi
 
-		echo "Your Trash is currently $(du -h ~/.trash | cut -f1 | tail -n -1) in size."
+		echo "Your Trash is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
 		else
-		echo "Your trash is currently $(du -h ~/.trash | cut -f1) in size."
+		echo "Your trash is currently $(du -h $BASKET | cut -f1) in size."
 	fi
 fi
