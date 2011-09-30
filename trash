@@ -19,7 +19,7 @@ ARG="$@"
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-BASKET=~/.trash
+BASKET=~/.local/share/Trash/files
 
 CHECK=$(ls -a ~ | grep -i $BASKET)
 if [ ! -d " " ]
@@ -34,7 +34,7 @@ if [ "X$ARG" == "X$BASKET" ]
 	else
 	if [ "X$ARG" != "X" ]
 		then
-		for junk in $ARG; do mv -b $junk $BASKET/$junk_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1 ; done
+		for junk in $ARG; do mv -b $junk $BASKET/"$junk"_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1 ; done
 		# user friendly reassuring fluffy stuff
 		RETURN="$ARG"
 		if [ "X$2" != "X" ]
