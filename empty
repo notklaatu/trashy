@@ -19,12 +19,25 @@ ARG="$1"
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# seems silly to have a conf file for trash
+# so im pulling in BASKET var from trashy script
+#BASKET=$(grep -m1 BASKET $(which trash) | cut -f2 -d"=")
+
+case "$(uname | tr [:upper:] [:lower:] )" in
+    linux) BASKET=~/.local/share/Trash/files/ ;;
+    bsd) BASKET=~/.local/share/Trash/files/ ;;
+    sun) BASKET=~/.local/share/Trash/files/ ;;
+    darwin) BASKET=~/.Trash ;; #check when around a mac
+    *) echo "cannot find your trash" && exit ;;
+esac
+
 if [ "X$ARG" == "X-v" ]
 	then
-	/bin/rm -rvf ~/.trash/* 2> /dev/null
-	/bin/rm -rvf ~/.trash/.* 2> /dev/null
-	else
-	/bin/rm -rf ~/.trash/* 2> /dev/null
-	/bin/rm -rf ~/.trash/.* 2> /dev/null
+    VERBOSE=v
+else
+    VERBOSE=""
 fi
-	echo "Your trash is now empty."
+
+find $BASKET -delete -mindepth 1
+
+echo "Your trash is now empty."

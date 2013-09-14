@@ -1,9 +1,8 @@
 #!/bin/bash
-ARG="$@"
 
 # trash - the command line trashcan
 #
-# Copyright (C) 2011 Klaatu la Terible
+# Copyright (C) 2011-13 Klaatu la Terible
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,32 +18,34 @@ ARG="$@"
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-BASKET=~/.local/share/Trash/files
+# sanitize input filenames
+ARG=${@// /_}
+set -e
 
-CHECK=$(ls -a ~ | grep -i $BASKET)
-if [ ! -d " " ]
-	then mkdir -m 700 $BASKET 2> /dev/null
-fi
+RUBBISH=(${ARG})
 
-if [ "X$ARG" == "X$BASKET" ]
-	then 
-	echo "You cannot trash the .trash"
-	echo "Use the empty command to empty the trash."	
-	echo "Or use /bin/rm -rf ~/.trash if you are trying to delete the .trash folder."
-	else
-	if [ "X$ARG" != "X" ]
-		then
-		for junk in $ARG; do mv -b $junk $BASKET/"$junk"_$(date | cut -f 2-5 -d ' ' | tr ' ' '_' | tr ':' '.') || exit 1 ; done
-		# user friendly reassuring fluffy stuff
-		RETURN="$ARG"
-		if [ "X$2" != "X" ]
-			then echo "Multiple files have been moved to the trash."
-			else
-			echo "$RETURN has been moved to the trash."	
-		fi
+# find the system trash
+case "$(uname | tr [:upper:] [:lower:] )" in
+    linux|bsd|sun) BASKET=~/.local/share/Trash/files ;;
+    darwin) BASKET=~/.Trash ;;    # TODO check when around a mac
+    *) BASKET=~/.trash ;;
+esac
 
-		echo "Your Trash is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
-		else
-		echo "Your trash is currently $(du -h $BASKET | cut -f1) in size."
-	fi
+test -d $BASKET || mkdir -m 700 -p $BASKET 2> /dev/null
+
+# pitch it
+if [ "X$ARG" != "X" ]
+then
+    for waste in ${RUBBISH[*]} ; do mv -b "$( echo "${waste}" | sed 's%_%\ %g' )" $BASKET ; done
+
+# tell the user what just happened
+    if [ "X$2" != "X" ]; then
+	for i in ${RUBBISH[*]} ; do echo $i "has been moved to the trash." ; done
+    else
+	for i in ${RUBBISH[*]} ; do echo $i "has been moved to the trash." ; done
+    fi
+
+    echo "Your Trash is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
+else
+    echo "Your trash is currently $(du -h $BASKET | cut -f1) in size."
 fi
