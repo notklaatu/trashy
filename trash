@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# process verbose and help options
+# default action
+ACT="mv"
+
+# process verbose and help and dryrun options
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo " "
@@ -27,6 +30,9 @@ if [ "$1" = "--help" -o "$1" = "-h" ]; then
     exit
 elif [ "$1" = "--verbose" -o "$1" = "-v" ]; then
     VERBOSE="-v"
+    shift 1
+elif [ "$1" = "--dryrun" -o "$1" = "-d" -o "$1" = "--dry-run" ]; then
+    ACT="echo"
     shift 1
 else
     break
@@ -47,26 +53,31 @@ set -e
 
 RUBBISH=(${ARG})
 
+if [ "X$RUBBISH" = "X" ]; then
+    TOTAL=1
+fi
+
 # find the system trash
 case "$(uname | tr [:upper:] [:lower:] )" in
-    linux|bsd|sun) BASKET=~/.local/share/Trash/files ;;
+    linux|bsd|sun) BASKET=~/.local/share/Trash ;;
     darwin) BASKET=~/.Trash ;;    # TODO check when around a mac
     *) BASKET=~/.trash ;;
 esac
 
-test -d $BASKET || mkdir -m 700 -p $BASKET 2> /dev/null
+test -d $BASKET/info || mkdir -m 700 -p $BASKET/info 2> /dev/null
+test -d $BASKET/files || mkdir -m 700 -p $BASKET/files 2> /dev/null
 
 # pitch it
 if [ "X$ARG" != "X" ]; then
-    for waste in ${RUBBISH[*]} ; do mv $VERBOSE "$( echo "${waste}" | sed 's%_%\ %g' )" $BASKET-$(date +%N) ; done
+    for waste in ${RUBBISH[*]} ; do
+	$ACT $VERBOSE "$( echo "${waste}" | sed 's%_%\ %g' )" $BASKET/files/${waste} ;
+	echo "[Trash Info]" > $BASKET/info/${waste}.trashinfo
+	echo "Path="$(realpath "${waste}") >> $BASKET/info/${waste}.trashinfo
+	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/${waste}.trashinfo
+    done
 fi
 
 # tell the user what just happened
-if [ "X$VERBOSE" == "X-v" ]; then
-    echo "Your Trash is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
-elif [ "X$ARGS" == "X" ]; then
+if [ "X$VERBOSE" == "X-v" -o "X$TOTAL" == "X1" ]; then
     echo "Your Trash is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
 fi
-
-
-
