@@ -1,5 +1,5 @@
 #!/bin/bash
-
+VERSION=1.0
 # trash - the command line trashcan
 #
 # Copyright (C) 2011-13 Klaatu la Terible
@@ -18,22 +18,72 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# find the system trash
+case "$(uname | tr [:upper:] [:lower:] )" in
+    linux|bsd|sun) BASKET=~/.local/share/Trash ;;
+    darwin) BASKET=~/.Trash ;; # TODO check when around a mac
+    *) BASKET=~/.trash ;;
+esac
+
+test -d $BASKET/info || mkdir -m 700 -p $BASKET/info 2> /dev/null
+test -d $BASKET/files || mkdir -m 700 -p $BASKET/files 2> /dev/null
+
+# empty function
+empty() {
+    CHECK=$(ls ${BASKET}/files/ )
+
+# is trash already empty?
+    if [ "X$CHECK" = "X" ]; then
+	echo "You have no files in trash."
+    fi
+
+    if [ "X$DRYRUN" = "X1" ]; then
+	echo "Pretending to remove: $CHECK"
+	ACT="echo"
+	KILL=""
+    else
+	KILL="-delete"
+	ACT="find"
+    fi
+
+# process verbosity and dry-run options
+    $ACT $BASKET $KILL -mindepth 1
+    exit
+}
+
+list() {
+    ls ${BASKET}/files
+}
+
+version() {
+    echo "Trashy, version $VERSION GPLv3"
+}
+
 # default action
-ACT="mv"
+ACT=${ACT:-mv}
 
 # process verbose and help and dryrun options
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo " "
-    echo "trash [--verbose] foo"
+    echo "trash [--verbose|--dry-run|--empty|--list] foo"
     echo " "
     exit
 elif [ "$1" = "--verbose" -o "$1" = "-v" ]; then
     VERBOSE="-v"
     shift 1
+elif [ "$1" = "--list" -o "$1" = "-l" ]; then
+    list
+    shift 1
+elif [ "$1" = "--version" -o "$1" = "-w" -o "$1" = "--which" ]; then
+    version
+    shift 1
 elif [ "$1" = "--dryrun" -o "$1" = "-d" -o "$1" = "--dry-run" ]; then
     ACT="echo"
+    DRYRUN=1
     shift 1
+elif [ "$1" = "--empty" -o "$1" = "-e" -o "$1" = "--pitch" ]; then
+    empty
 else
     break
 fi
@@ -56,16 +106,6 @@ RUBBISH=(${ARG})
 if [ "X$RUBBISH" = "X" ]; then
     TOTAL=1
 fi
-
-# find the system trash
-case "$(uname | tr [:upper:] [:lower:] )" in
-    linux|bsd|sun) BASKET=~/.local/share/Trash ;;
-    darwin) BASKET=~/.Trash ;;    # TODO check when around a mac
-    *) BASKET=~/.trash ;;
-esac
-
-test -d $BASKET/info || mkdir -m 700 -p $BASKET/info 2> /dev/null
-test -d $BASKET/files || mkdir -m 700 -p $BASKET/files 2> /dev/null
 
 # pitch it
 if [ "X$ARG" != "X" ]; then

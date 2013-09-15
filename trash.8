@@ -9,11 +9,17 @@ trashy \- trash in the shell
 .SH "DESCRIPTION"
 .PP 
 There is an unhealthy habit that arises with many a POSIX user: the
-careless and wreckless use of the dreaded \fBrm\fP command. The \fBtrashy\fP command set is
-a helpful intermediary that intervenes when you would otherwise use
-\fBrm\fP. It consists of two commands: \fBtrash\fP, which moves your
-file or files to your system `trash can`, and \fBempty\fP, which
-removes files from your system trash.
+careless and wreckless use of the dreaded \fBrm\fP command. \fBTrashy\fP
+is a helpful intermediary that intervenes when you would otherwise use
+\fBrm\fP. 
+.PP
+\fBtrashy\fP attempts to be compliant with the Free Desktop specification for
+desktop trash, meaning that you can use \fBtrashy\fP in conjunction
+with a desktop environment and find your files in your desktop trash
+just as if you had dragged and dropped them there yourself. You can
+also restore the files by right-clicking and selecting `restore`, or
+whatever method your desktop defines for that process. 
+.PP
 .SH "USAGE"
 .TP
 Issue this command:
@@ -30,7 +36,7 @@ When you're really really sure that everything in
 your Trash wants to be nuked out of existance, then you can
 issue the command:
 .PP
-empty
+trask --empty
 .PP
 and your Trash will be emptied.
 .PP
@@ -45,37 +51,51 @@ current size of your system trash.
 .SH OPTIONS
 .PP
 .TP
+.B -l, --list
+Lists the contents of your trash can.
+.TP
 .B -v, --verbose
-Makes \fBtrash\fP and \fBempty\fP verbose.
+Makes \fBtrashy\fP verbose.
+.TP
+.B -w, --version, --which
+Returns the version of trashy you are currently running. -w because -v
+was already taken by verbose :-)
 .TP
 .B -d, --dry-run, --dryrun
 Does not actually move or remove files, just shows what will happen if
-you really did. This works for both \fBtrash\fP and \fBempty\fP
+you really did. The --empty process is verbose by default.
+.PP
 .SH "SYSTEM TRASH LOCATIONS"
-.TP
+.PP
 On Linux, BSD, Ilumos, and Solaris, the system trash, by default, is
-that defined by the Free Desktop specification: ~/.local/share/Trash/files/
+that defined by the Free Desktop specification: ~/.local/share/Trash
 .PP
 If you do not use an environment that plays nice with the Free Desktop
-spec (such as Mac OS) then trashy will attempt to detecte and use
+spec (ie, Mac OS) then trashy will attempt to detect and use
 your actual system trash.
 .PP
-If you are not on any recognizable POSIX system then a ~/.trash
-directory is created and used as a fallback.
+If all else fails, a ~/.trash directory is created and used.
 .PP
 .SH "BUGS AND ISSUES"
-.TP
+.PP
 Things can get a little messy when you're trashing files from an
-external drive, because \fBtrash\fP moves the file from your external
+external drive because \fBtrash\fP currently moves the file from your external
 drive to your system harddrive. It works, but it's not as graceful as,
 say, creating a .trash folder on that external drive and hiding stuff
 there until later.
+.PP
+.SH "ALTERNATIVES"
+.PP
+\fBTrashy\fP depends on BASH. There is a similar application called
+trash-cli, which is Python-based. At this point, they do mostly the
+same thing, but obviously if you do not run BASH or ZSH or similar,
+then you might prefer a Python-based solution.
 .SH "SEE ALSO"
 .nf
 .I rm (1)
 .I mv (1)
 .URL http://slackermedia.info/trashy
-.URL http://trash-cli.wahtever
+.URL https://github.com/andreafrancia/trash-cli
 .fi
 .PP
 .SH "AUTHORS"
