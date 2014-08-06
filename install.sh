@@ -8,7 +8,6 @@ if [ "X$OS" == "XDarwin" ]
 fi
 
 cp -fv ./trash $INSTDIR/trash
-cp -fv ./empty $INSTDIR/empty
 chmod +x $INSTDIR/trash
 
 ########################################
