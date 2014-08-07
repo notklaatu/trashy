@@ -98,7 +98,7 @@ done
 # not sure if that is appropriate either.
 
 # sanitize input filenames
-ARG=${@// /_}
+ARG=${@// /__+trash+__}
 set -e
 
 RUBBISH=(${ARG})
@@ -110,7 +110,7 @@ fi
 # pitch it
 if [ "X$ARG" != "X" ]; then
     for waste in ${RUBBISH[*]} ; do
-	$ACT $VERBOSE "$( echo "${waste}" | sed 's%_%\ %g' )" $BASKET/files/${waste} ;
+	$ACT $VERBOSE "$( echo "${waste}" | sed 's%__+trash+__%\ %g' )" $BASKET/files/${waste} ;
 	echo "[Trash Info]" > $BASKET/info/${waste}.trashinfo
 	echo "Path="$(realpath "${waste}") >> $BASKET/info/${waste}.trashinfo
 	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/${waste}.trashinfo
