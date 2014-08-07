@@ -1,4 +1,11 @@
-1. Introduction
+-*- mode:org -*-
+
+A (mostly) Freedesktop compliant rubbish bin interface for the shell written entirely in BASH.
+
+http://slackermedia.info/trashy
+
+
+* Introduction
 
 Hi! right now you're looking at trashy, the sane rm intermediary.
 This means that you've probably just done the unthinkable:
@@ -11,7 +18,7 @@ Well, not for your deleted file -- that's gone.  Sorry.  But from
 now on, you'll never have to go through that ever again!
 
 
-2. Usage
+* Usage
 
 Trashy is a simple shell script that introduces the idea of a trash
 can for the command line.  Meaning that you can issue this command:
@@ -35,7 +42,7 @@ trash --empty
 and your system trash will be emptied.
 
 
-3. System Trash
+* System Trash
 
 Trashy defines a "system trash" on Linux, BSD, and Solaris-based
 operating systems in accordance to the Open Desktop standard:
@@ -50,7 +57,7 @@ standard, trashy tries to conform with what they do use. If all else
 fails, ~/.trash is used.
 
 
-4. Aliases
+* Aliases
 
 To help myself ease into the concept of the trash command, I literally
 had to alias rm to trash for a while.  This works quite well, in
@@ -70,7 +77,7 @@ alias helps.  To have an alias installed along with trashy, simple
 uncomment the alias block in the install.sh script.
 
 
-5. Ditching the Alias
+* Ditching the Alias
 
 Eventually it will become tedious to you to work around the trash
 command every time you really really do want to rm a file.  At that
@@ -85,7 +92,7 @@ trash to move to a trash bin.  It WILL take a while, if you're used to
 rm, so do account for that.
 
 
-6. Why trashy?
+* Why trashy?
 
 Trashy is BASHy, meaning that it's really really portable.  It can be
 installed easily on GNU Linux, freeBSD/netBSD/DragonFlyBSD, Illumos,
@@ -103,7 +110,7 @@ or if you don't mind a bit of set-up on non Free Desktop UNIX systems.
 http://code.google.com/p/trash-cli/
 
 
-7. Bugs
+* Bugs
 
 I've ironed a lot of them, actually. Trashy has gotten a lot better
 since its original implementation. I am sure there are many bugs that
