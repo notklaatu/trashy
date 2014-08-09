@@ -9,7 +9,7 @@
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 
-PRGNAM=trash
+PRGNAM=trashy
 VERSION=${VERSION:-1.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SMi}
@@ -17,18 +17,13 @@ TAG=${TAG:-_SMi}
 ARCH=noarch
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/SBo}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
 
 set -e
 rm -rf $PKG
-mkdir -p $TMP $PKG $OUTPUT
-cd $TMP
-rm -rf $PRGNAM-$VERSION
-
-cp $PRGNAM $PRGNAM.8 README $PRGNAM-$VERSION
-cd $PRGNAM-$VERSION
+mkdir -p $PKG $OUTPUT
+cd $PKG
 
 chown -R root:root .
 find . \
@@ -37,19 +32,27 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
-#man
-mkdir -p $PRGNAM-$VERSION/usr/man/man8/
-mv $PRGNAM.8 $PRGNAM-$VERSION/usr/man/man8/
-gzip $PRGNAM-$VERSION/usr/man/man8/$PRGNAM.8
+#make install
+mkdir -p usr/local/bin
+cp $CWD/$PRGNAM ./usr/local/bin/$PRGNAM
 
-mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+#man
+mkdir -p usr/man/man8/
+cp $CWD/$PRGNAM.8 ./usr/man/man8/$PRGNAM.8
+gzip ./usr/man/man8/$PRGNAM.8
+
+mkdir -p ./usr/doc/$PRGNAM-$VERSION
 cp -a \
-  README \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+  $CWD/README \
+  ./usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+
+#makeinfo $CWD/usr/info/$PRGNAM.texinfo -o $PKG/usr/info/$PRGNAM.info
+#gzip -9 $PKG/usr/info/*.info*
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
