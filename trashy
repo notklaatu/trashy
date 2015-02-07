@@ -118,6 +118,6 @@ if [ "X$ARG" != "X" ]; then
 fi
 
 # tell the user what just happened
-if [ "X$VERBOSE" == "X-v" -o "X$TOTAL" == "X1" ]; then
-    echo "Your Trash is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
+if [ "X$VERBOSE" == "X-v" ]; then
+    echo "$BASKET is currently $(du -h $BASKET | cut -f1 | tail -n -1) in size."
 fi
