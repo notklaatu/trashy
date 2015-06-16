@@ -26,13 +26,13 @@ Usage
 Trashy is a simple shell script that introduces the idea of a trash
 can for the command line.  Meaning that you can issue this command:
 
-   trash foo bar
+    trash foo bar
 
 and the files 'foo' and 'bar' will be moved to your system trash.
 
 or...
 
-   trash foo\ bar
+    trash foo\ bar
 
 and the file 'foo bar' will be moved to your system trash.
 
@@ -40,7 +40,7 @@ Simple as that.  When you're really really sure that everything in
 your Trash wants to be nuked out of existence, then you can
 issue the command:
 
-   trash --empty
+    trash --empty
 
 and your system trash will be emptied.
 
