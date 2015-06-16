@@ -113,7 +113,7 @@ Similar projects do exist. The one I know about uses Python and has some
 really neat and fancy features. Check it out if you're on a Linux box
 or if you don't mind a bit of set-up on non Free Desktop UNIX systems.
 
-http://code.google.com/p/trash-cli/
+https://github.com/andreafrancia/trash-cli
 
 
 Bugs
