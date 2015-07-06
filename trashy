@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=1.0
+VERSION=1.2
 # trash - the command line trashcan
 #
 # Copyright (C) 2011-13 Klaatu la Terible
@@ -47,7 +47,7 @@ empty() {
     fi
 
 # process verbosity and dry-run options
-    $ACT $BASKET $KILL -mindepth 1
+    $ACT $BASKET -mindepth 1 $KILL
     exit
 }
 
@@ -110,10 +110,10 @@ fi
 # pitch it
 if [ "X$ARG" != "X" ]; then
     for waste in ${RUBBISH[*]} ; do
-	$ACT $VERBOSE "$( echo "${waste}" | sed 's%__+trash+__%\ %g' )" $BASKET/files/${waste} ;
-	echo "[Trash Info]" > $BASKET/info/${waste}.trashinfo
-	echo "Path="$(realpath "${waste}") >> $BASKET/info/${waste}.trashinfo
-	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/${waste}.trashinfo
+	$ACT $VERBOSE "$( echo "${waste}" | sed 's%__+trash+__%\ %g' )" $BASKET/files/`basename ${waste}` ;
+	echo "[Trash Info]" > $BASKET/info/`basename ${waste}.trashinfo`
+	echo "Path="$(realpath "${waste}") >> $BASKET/info/`basename ${waste}.trashinfo`
+	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${waste}.trashinfo`
     done
 fi
 

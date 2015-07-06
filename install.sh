@@ -7,8 +7,9 @@ if [ "X$OS" == "XDarwin" ]
 	else INSTDIR=/usr/local/bin
 fi
 
-cp -fv ./trash $INSTDIR/trash
-chmod +x $INSTDIR/trash
+cp -fv ./trashy $INSTDIR
+chmod +x $INSTDIR/trashy || exit 1
+ln -s $INSTDIR/trashy $INSTDIR/trash
 
 ########################################
 ### uncomment the block below if you ###
