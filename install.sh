@@ -9,7 +9,11 @@ fi
 
 cp -fv ./trashy $INSTDIR
 chmod +x $INSTDIR/trashy || exit 1
-ln -s $INSTDIR/trashy $INSTDIR/trash
+if [ -L $INSTDIR/trash ]
+    then true
+else
+    ln -s $INSTDIR/trashy $INSTDIR/trash
+fi
 
 ########################################
 ### uncomment the block below if you ###
