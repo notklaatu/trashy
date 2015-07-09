@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=1.2
+VERSION=1.3
 # trash - the command line trashcan
 #
 # Copyright (C) 2011-13 Klaatu la Terible
@@ -30,7 +30,7 @@ test -d $BASKET/files || mkdir -m 700 -p $BASKET/files 2> /dev/null
 
 # empty function
 empty() {
-    CHECK=$(ls ${BASKET}/files/ )
+    CHECK=$(ls "${BASKET}/files/" )
 
 # is trash already empty?
     if [ "X$CHECK" = "X" ]; then
@@ -98,7 +98,7 @@ done
 # not sure if that is appropriate either.
 
 # sanitize input filenames
-ARG=${@// /__+trash+__}
+ARG="${@}"
 set -e
 
 RUBBISH=(${ARG})
@@ -109,8 +109,8 @@ fi
 
 # pitch it
 if [ "X$ARG" != "X" ]; then
-    for waste in ${RUBBISH[*]} ; do
-	$ACT $VERBOSE "$( echo "${waste}" | sed 's%__+trash+__%\ %g' )" $BASKET/files/`basename ${waste}` ;
+    for waste in "${RUBBISH[*]}" ; do
+	$ACT $VERBOSE "${ARG}" "$BASKET/files/`basename "${waste}"`" ;
 	echo "[Trash Info]" > $BASKET/info/`basename ${waste}.trashinfo`
 	echo "Path="$(realpath "${waste}") >> $BASKET/info/`basename ${waste}.trashinfo`
 	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${waste}.trashinfo`
