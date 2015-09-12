@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=1.5
+VERSION=1.6
 # trash - the command line trashcan
 #
 # Copyright (C) 2011-13 Klaatu la Terible
@@ -110,10 +110,11 @@ fi
 # pitch it
 if [ "X$ARG" != "X" ]; then
     for waste in ${ARG[*]} ; do
+	ORIGIN=$(realpath "${waste}")
 	$ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${waste}"`" ;
-	echo "[Trash Info]" > $BASKET/info/`basename ${waste}.trashinfo`
-	echo "Path="$(realpath "${waste}") >> $BASKET/info/`basename ${waste}.trashinfo`
-	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${waste}.trashinfo`
+	echo "[Trash Info]" > $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	echo "Path=${ORIGIN}" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
     done
 fi
 
