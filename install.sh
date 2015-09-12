@@ -2,9 +2,11 @@
 # install the humble but useful trash command
 
 OS=$(uname)
-if [ "X$OS" == "XDarwin" ] 
-	then INSTDIR=/usr/bin
-	else INSTDIR=/usr/local/bin
+if [ "X${OS}" = "XDarwin" ]; then
+    INSTDIR=/usr/bin
+    exit
+else 
+    INSTDIR=/usr/local/bin
 fi
 
 cp -fv ./trashy $INSTDIR
@@ -27,8 +29,4 @@ fi
 #	source /etc/profile
 #fi
 
-CHECK=$(ls $INSTDIR | grep trash)
-if [ "X$CHECK" == "X" ]
-	then echo "Install encountered some errors.  You might try copying the apps to your home directory (into ~/bin for instance) and use them locally."
-	else echo "Installation script complete."
-fi
+find -L ${INSTDIR} -iname "trash" -type f -exec echo "Install encountered some errors.  You might try copying the apps to your home directory (into ~/bin for instance) and use them locally." \;
