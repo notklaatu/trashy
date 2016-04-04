@@ -29,4 +29,4 @@ fi
 #	source /etc/profile
 #fi
 
-find -L ${INSTDIR} -iname "trash" -type f -exec echo "Install encountered some errors.  You might try copying the apps to your home directory (into ~/bin for instance) and use them locally." \;
+find -L ${INSTDIR} -iname "trash" -type f -exec echo "Install complete. You can use the trash command now with 'trash --help'." \; || echo "Install encountered some errors.  You might try copying the apps to your home directory (into ~/bin for instance) and use them locally."
