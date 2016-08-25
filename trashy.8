@@ -36,7 +36,7 @@ When you're really really sure that everything in
 your Trash wants to be nuked out of existance, then you can
 issue the command:
 .PP
-trask --empty
+trash --empty
 .PP
 and your Trash will be emptied.
 .PP
@@ -46,16 +46,19 @@ it:
 .PP
 \fBtrash\fP foo\\ bar
 .PP
-If you issue \fBtrash\fP without any arguments, it tells you the
-current size of your system trash.
+If you issue \fBtrash\fP without any arguments, it will do nothing.
 .SH OPTIONS
 .PP
 .TP
 .B -l, --list
-Lists the contents of your trash can.
+Lists the contents of your trash can. To also see the size of your
+trash, add the -v flag.
 .TP
 .B -v, --verbose
-Makes \fBtrashy\fP verbose.
+Makes \fBtrashy\fP verbose. 
+.TP
+.B -r, --restore [FILE NAME]
+Restores a file. 
 .TP
 .B -w, --version, --which
 Returns the version of trashy you are currently running. -w because -v

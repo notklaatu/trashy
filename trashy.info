@@ -1,5 +1,5 @@
 PRGNAM="trashy"
-VERSION="1.0"
+VERSION="1.7"
 HOMEPAGE="http://slackermedia.info/trashy"
 DOWNLOAD="https://gitlab.com/trashy/trashy/repository/archive.tar.bz2?ref=master"
 MD5SUM="6a66b885a6c0fb11099d716441474ab4"
