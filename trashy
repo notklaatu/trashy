@@ -66,7 +66,7 @@ ACT=${ACT:-mv}
 while [ True ]; do
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
     echo " "
-    echo "trash [--verbose|--dry-run|--empty|--list] foo"
+    echo "trash [--verbose|--dry-run|--empty|--list|--restore] foo"
     echo " "
     exit
 elif [ "$1" = "--verbose" -o "$1" = "-v" ]; then
@@ -84,6 +84,9 @@ elif [ "$1" = "--dryrun" -o "$1" = "-d" -o "$1" = "--dry-run" ]; then
     shift 1
 elif [ "$1" = "--empty" -o "$1" = "-e" -o "$1" = "--pitch" ]; then
     empty
+elif [ "$1" = "--restore" -o "$1" = "-r" ]; then
+    RESTORE=1
+    shift 1
 else
     break
 fi
@@ -91,7 +94,7 @@ done
 
 # TODO
 # if source begins with /run or /media or /mnt ;then
-# warn the person that trashing it is copying it from 
+# warn the person that trashing it is copying it from
 # that external media onto local drive and do they really
 # want to do that?
 # either that or we have to make .trash on that device.
@@ -111,10 +114,18 @@ fi
 if [ "X$ARG" != "X" ]; then
     for waste in ${ARG[*]} ; do
 	ORIGIN=$(realpath "${waste}")
-	$ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${waste}"`" ;
-	echo "[Trash Info]" > $BASKET/info/`basename ${ORIGIN}.trashinfo`
-	echo "Path=${ORIGIN}" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
-	echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	if [ ! -z $RESTORE ]; then
+	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename ${ORIGIN}.trashinfo` | cut -d "=" -f2);
+	    if [ -z $DRYRUN ]; then
+		ACT="rm"
+	    fi
+	    $ACT $VERBOSE $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	else
+	    $ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${waste}"`" ;
+	    echo "[Trash Info]" > $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	    echo "Path=${ORIGIN}" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	fi
     done
 fi
 
