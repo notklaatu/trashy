@@ -59,7 +59,7 @@ else
     ln -s $INSTDIR/trashy $INSTDIR/trash
 fi
 
-if [ "$DRACO" -eq "1" ]; then
+if [ "$DRACO" = "1" ]; then
     PROCHK=`cat /etc/profile | sed -n '/alias rm="trash"/p'`
     if [ "X$PROCHK" == "X" ]; then 
 	echo 'alias rm="trash"' >> /etc/profile
@@ -67,7 +67,7 @@ if [ "$DRACO" -eq "1" ]; then
     fi
 fi
 
-if [ "$ALIAS" -eq "1" ]; then
+if [ "$ALIAS" = "1" ]; then
     PROCHK=`cat $HOME/.bashrc | sed -n '/alias rm="trash"/p'`
     if [ "X$PROCHK" == "X" ]; then 
 	echo 'alias rm="trash"' >> $HOME/.bashrc
