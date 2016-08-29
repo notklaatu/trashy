@@ -71,6 +71,17 @@ list() {
     ls ${BASKET}/files
 }
 
+namechk() {
+    local __resultvar=$1
+    if [ -e "$BASKET/files/${COLLIDER}" ]; then
+	local exists=1
+    else
+	local exists=0
+    fi
+
+    eval "$__resultvar"="$exists"
+}
+
 version() {
     echo "Trashy, version $VERSION GPLv3"
 }
@@ -118,7 +129,7 @@ done
 
 # sanitize input filenames
 ARG="${@}"
-set -e
+#set -e
 
 RUBBISH=(${ARG})
 
@@ -126,19 +137,48 @@ if [ "X$RUBBISH" = "X" ]; then
     TOTAL=1
 fi
 
-# catch stragglers that did not get deleted
 if [ "X$ARG" != "X" ]; then
     if [ "$RESTORE" = "1" ];then
 	restore
-    else
+	exit
+    fi
+    
     for waste in ${ARG[*]} ; do
 	ORIGIN=$(realpath "${waste}")
-	    $ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${waste}"`" ;
+	COLLIDER=`basename "${waste}"`
+	EXT=`echo "${waste}"|rev|cut -f1-2 -d'.'|rev`
+	echo $EXT | grep tar || EXT=`echo "${waste}"|rev|cut -f1 -d'.'|rev`
+
+	namechk result
+
+	if [ "$result" -ne 0 ]; then
+	    n=1
+	    # name collision
+	    while [ $n -gt 0 ]; do
+		COLLIDER=`basename "${waste}" |rev |cut -f2 -d'.' |rev`\ ${n}.$EXT
+		namechk result
+		if [ "$result" -ne 0 ]; then
+		    let "n++"
+		else
+		    n=0
+		    break
+		fi
+	    done
+
+	    # name collision resolved
+	    $ACT $VERBOSE "${waste}" "$BASKET/files/${COLLIDER}"
+	    INFO=$BASKET/info/`echo "${COLLIDER}".trashinfo`
+	    echo "[Trash Info]" > "$INFO"
+	    echo "Path=${ORIGIN}" >> "$INFO"
+	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> "$INFO"
+	else
+	    # no name collision
+	    $ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${waste}"`"
 	    echo "[Trash Info]" > $BASKET/info/`basename ${ORIGIN}.trashinfo`
 	    echo "Path=${ORIGIN}" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
 	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	fi	
     done
-    fi
 fi
 
 if [ "X$VERBOSE" == "X-v" ]; then
