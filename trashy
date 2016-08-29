@@ -54,11 +54,11 @@ empty() {
 # restore function
 restore() {
 if [ "X$ARG" != "X" ]; then
-    for waste in ${ARG[*]} ; do
+    for waste in "${ARG[*]}"; do
 	ORIGIN=$(realpath "${waste}")
 	if [ ! -z $RESTORE ]; then
-	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename ${ORIGIN}.trashinfo` | cut -d "=" -f2);
-	    /bin/rm -f $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` | cut -d "=" -f2);
+	    /bin/rm -f $BASKET/info/`basename "${ORIGIN}".trashinfo`
 	fi
     done
 else
@@ -129,7 +129,7 @@ done
 
 # sanitize input filenames
 ARG="${@}"
-#set -e
+set -e
 
 RUBBISH=(${ARG})
 
@@ -143,19 +143,24 @@ if [ "X$ARG" != "X" ]; then
 	exit
     fi
     
-    for waste in ${ARG[*]} ; do
+    for waste in "${ARG[*]}" ; do
 	ORIGIN=$(realpath "${waste}")
 	COLLIDER=`basename "${waste}"`
-	EXT=`echo "${waste}"|rev|cut -f1-2 -d'.'|rev`
-	echo $EXT | grep tar || EXT=`echo "${waste}"|rev|cut -f1 -d'.'|rev`
-
+	echo "${waste}" | grep \. 1> /dev/null || EXT=`echo "${waste}"|rev|cut -f1-2 -d'.'|rev` && \
+		FILE=`echo "${waste}"|rev|cut -f3- -d'.'|rev`
+	if [ X"$EXT" = "X" ]; then
+	    echo $EXT | grep tar || EXT=`echo "${waste}"|rev|cut -f1 -d'.'|rev` && \
+		    FILE=`echo "${waste}"|rev|cut -f2- -d'.'|rev`
+	    DOT='.'
+	fi
+	
 	namechk result
 
 	if [ "$result" -ne 0 ]; then
 	    n=1
 	    # name collision
 	    while [ $n -gt 0 ]; do
-		COLLIDER=`basename "${waste}" |rev |cut -f2 -d'.' |rev`\ ${n}.$EXT
+		COLLIDER="${FILE}"\ ${n}"$DOT""$EXT"
 		namechk result
 		if [ "$result" -ne 0 ]; then
 		    let "n++"
@@ -168,15 +173,16 @@ if [ "X$ARG" != "X" ]; then
 	    # name collision resolved
 	    $ACT $VERBOSE "${waste}" "$BASKET/files/${COLLIDER}"
 	    INFO=$BASKET/info/`echo "${COLLIDER}".trashinfo`
-	    echo "[Trash Info]" > "$INFO"
-	    echo "Path=${ORIGIN}" >> "$INFO"
-	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> "$INFO"
+	    echo "[Trash Info]" > "${INFO}"
+	    echo "Path=${ORIGIN}" >> "${INFO}"
+	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> "${INFO}"
 	else
 	    # no name collision
-	    $ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${waste}"`"
-	    echo "[Trash Info]" > $BASKET/info/`basename ${ORIGIN}.trashinfo`
-	    echo "Path=${ORIGIN}" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
-	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> $BASKET/info/`basename ${ORIGIN}.trashinfo`
+	    INFO=$BASKET/info/`basename "${COLLIDER}"`.trashinfo
+	    $ACT $VERBOSE "${waste}" "$BASKET/files/`basename "${COLLIDER}"`"
+	    echo "[Trash Info]" > "${INFO}"
+	    echo "Path=${ORIGIN}" >> "${INFO}"
+	    echo "DeletionDate=$(date +%Y-%m-%dT%T)" >> "${INFO}"
 	fi	
     done
 fi
