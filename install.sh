@@ -14,6 +14,7 @@ echo "If you do not have admin rights: "
 echo "install.sh --local      install to $HOME/bin"
 echo "install.sh --alias      alias rm=trashy in .bashrc"
 echo " "
+exit
 }
 
 OS=$(uname)
