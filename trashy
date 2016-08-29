@@ -54,7 +54,7 @@ empty() {
 # restore function
 restore() {
 if [ "X$ARG" != "X" ]; then
-    for waste in "${ARG[*]}"; do
+    for waste in ${ARG[*]}; do
 	ORIGIN=$(realpath "${waste}")
 	if [ ! -z $RESTORE ]; then
 	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` | cut -d "=" -f2);
@@ -128,32 +128,48 @@ done
 # not sure if that is appropriate either.
 
 # sanitize input filenames
-ARG="${@}"
+ARG=( "${@}" ) #create array, retain spaces
 set -e
-
-RUBBISH=(${ARG})
-
-if [ "X$RUBBISH" = "X" ]; then
-    TOTAL=1
-fi
 
 if [ "X$ARG" != "X" ]; then
     if [ "$RESTORE" = "1" ];then
 	restore
 	exit
     fi
-    
-    for waste in "${ARG[*]}" ; do
-	ORIGIN=$(realpath "${waste}")
-	COLLIDER=`basename "${waste}"`
-	echo "${waste}" | grep \. 1> /dev/null || EXT=`echo "${waste}"|rev|cut -f1-2 -d'.'|rev` && \
-		FILE=`echo "${waste}"|rev|cut -f3- -d'.'|rev`
-	if [ X"$EXT" = "X" ]; then
-	    echo $EXT | grep tar || EXT=`echo "${waste}"|rev|cut -f1 -d'.'|rev` && \
-		    FILE=`echo "${waste}"|rev|cut -f2- -d'.'|rev`
+
+for c in $(seq 0 $((${#ARG[@]} - 1))) ;do
+    waste=`echo "${ARG[$c]}"`
+    ORIGIN=$(realpath "${waste}")
+    COLLIDER=`basename "${waste}"`
+
+    # check for leading dotslash
+    LEADER=`echo "${waste}" | grep "\.\/"` || LEADER=""
+    if [ "${LEADER}" != "" ]; then 
+	waste=`echo "${waste}" | cut -b3-`
+    fi
+
+    HAS_DOT=`echo "${waste}" | grep "\."` || HAS_DOT=""
+
+	if [ "$HAS_DOT" != "" ];then
 	    DOT='.'
+	    # propose a file extension
+	    EXT=`echo "${waste}"|rev|cut -f1-2 -d'.'|rev` # tar.gz
+
+	    TAR=`echo $EXT | grep tar` || TAR=""
+	    if [ "$TAR" != "" ]; then #is tar
+		FILE=`echo "${waste}"|rev|cut -f3- -d'.'|rev`
+	    else
+		# this is not a tar
+		FILE=`echo "${waste}"|rev|cut -f2- -d'.'|rev`
+		EXT=`echo "${waste}"|rev|cut -f1 -d'.'|rev`
+	    fi
+
+	else
+	    EXT=""
+	    DOT=""
+	    FILE=`basename "${waste}"`
 	fi
-	
+
 	namechk result
 
 	if [ "$result" -ne 0 ]; then
