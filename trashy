@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 VERSION=2.0
 # trash - the command line trashcan
 #
@@ -55,7 +55,7 @@ empty() {
 restore() {
 if [ "X$ARG" != "X" ]; then
     for waste in ${ARG[*]}; do
-	ORIGIN=$(realpath "${waste}")
+	ORIGIN=$($REALPATH "${waste}")
 	if [ ! -z $RESTORE ]; then
 	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` | cut -d "=" -f2);
 	    /bin/rm -f $BASKET/info/`basename "${ORIGIN}".trashinfo`
@@ -88,6 +88,7 @@ version() {
 
 # default action
 ACT=${ACT:-mv}
+REALPATH='readlink -f'
 
 # process verbose and help and dryrun options
 while [ True ]; do
@@ -139,7 +140,7 @@ if [ "X$ARG" != "X" ]; then
 
 for c in $(seq 0 $((${#ARG[@]} - 1))) ;do
     waste=`echo "${ARG[$c]}"`
-    ORIGIN=$(realpath "${waste}")
+    ORIGIN=$($REALPATH "${waste}")
     COLLIDER=`basename "${waste}"`
 
     # check for leading dotslash
