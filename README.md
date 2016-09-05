@@ -131,7 +131,9 @@ go and let me know what you find. I can't promise I'll fix them
 immediately, but they'll definitely make my list.
 
 More features are still planned; notably, better handling of files
-that are not in one's home folder.
+that are not in one's home folder (that is, do not copy file to local
+filesystem to "trash" it; use a hidden .trash dir on the remote file
+system instead, or at least provide this option).
 
 I can generally be contacted via klaatu at the domain of
 member dot fsf dot org.
