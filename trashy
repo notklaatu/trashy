@@ -140,7 +140,7 @@ if [ "X$ARG" != "X" ]; then
 
 for c in $(seq 0 $((${#ARG[@]} - 1))) ;do
     waste=`echo "${ARG[$c]}"`
-    ORIGIN=$($REALPATH "${waste}")
+    ORIGIN=$($REALPATH "${waste}" 2> /dev/null) 
     COLLIDER=`basename "${waste}"`
 
     # check for leading dotslash
