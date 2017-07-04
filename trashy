@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-VERSION=2.0
+VERSION=2.1
 # trash - the command line trashcan
 #
-# Copyright (C) 2011-16 Klaatu la Terible
+# Copyright (C) 2011-17 Klaatu la Terible
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,13 +57,13 @@ if [ "X$ARG" != "X" ]; then
     for waste in ${ARG[*]}; do
 	ORIGIN=$($REALPATH "${waste}")
 	if [ ! -z $RESTORE ]; then
-	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` | cut -d "=" -f2);
-	    /bin/rm -f $BASKET/info/`basename "${ORIGIN}".trashinfo`
+	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` 2> /dev/null | cut -d "=" -f2) 2> /dev/null || echo "File not found in trash. Provide filename as it appears in the output of 'trash --list'"
+	    /bin/rm -f $BASKET/info/`basename "${ORIGIN}".trashinfo` 2> /dev/null
 	fi
     done
 else
-    echo "Restore what file?"
-    echo "Provide the name as it appears in the output of 'trash --list'"
+    echo "File not found in trash."
+    echo "Provide filename as it appears in the output of 'trash --list'"
 fi
 }
 
