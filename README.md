@@ -1,55 +1,52 @@
 Trashy
 ======
 
-Get trashy! A [mostly] Freedesktop-compliant rubbish bin interface for the shell written entirely in BASH.
+Get trashy!: A [mostly] Freedesktop-compliant rubbish bin interface for the shell, written entirely in BASH.
 
 http://slackermedia.info/trashy
 
 
-Introduction
+The sane `rm` intermediary
 -----------------
 
-Hi! right now you're looking at trashy, the sane `rm` intermediary.
-This means that you've probably just done the unthinkable:
-accidentally rm'd a superImportantFile by accident and immediately
-thereafter started cursing God, UNIX, GNU, computers, and yourself.
+Hi! If you're looking at `trashy` right now, you've probably just accidentally rm'd a superImportantFile by accident. You're cursing God, UNIX, GNU, computers, and yourself. While there's no hope for your already deleted file — that's gone, sorry—with `trashy`, you'll never have to go through that ever again! 
 
-Never fear.  There is hope.
-
-Well, not for your deleted file -- that's gone. Sorry. But if you use
-`trashy`, you'll never have to go through that ever again!
-
-
-Usage
---------
-
-Trashy is a simple shell script that introduces the idea of a trashcan
-for the command line.  Meaning that you can issue this command:
-
-    trash foo bar
-
-and the files 'foo' and 'bar' will be moved to your system trash.
-
-or...
-
-    trash foo\ bar
-
-and the file 'foo bar' will be moved to your system trash.
-
-Simple as that.
-
-Do you need that file back? Restore it with:
+`Trashy` is a simple shell script that enables you to restore superImportantFile simply and painlessly. Just type:
 
     trash --restore foo
 
 and 'foo' is put back where it belongs.
 
-When you're really *really* sure that everything in your Trash wants
-to be nuked out of existence, then issue the command:
+`Trashy` also serves as a trashcan for the command line. Issue this command:
+
+    trash foo bar
+
+and `trashy` will move the files 'foo' and 'bar' to your system trash. Or type
+
+    trash foo\ bar
+
+to move the file 'foo bar' to your system trash.
+
+When you're really, *really* sure that you want to nuke everything in your trash out of existence, issue the command:
 
     trash --empty
 
-and your system trash is emptied.
+and `trashy` will empty your system trash.
+
+Why trashy?
+-----------------
+
+The `rm` command doesn't account for human error. Even if you like your UNIX to be
+responsive and obedient, you'll still make mistakes. Trashy offers a buffer between you and lost-file disaster.
+
+`Trashy` is BASHy, meaning that it's very portable; anything
+that can run BASH can run it. You can easily install it on GNU Linux, freeBSD, and netBSD. It has also been
+tested on Solaris and Open Solaris families, and even Mac (obviously
+not Freedesktop-compliant, so features are missing) OS.
+
+Projects similar to `trashy` do exist. One, [https://github.com/andreafrancia/trash-cli](trash-cli), uses Python and offers some
+really neat and fancy features. Check it out if you're on a Linux box,
+or if you don't mind a bit of set-up on non-Free Desktop UNIX systems.
 
 
 System Trash
@@ -97,29 +94,6 @@ Removing the Alias
 
 Once you're used to using `rm` to delete permanently,
 and trashy to move to a trash bin, just delete the alias from your `.bashrc` file.
-
-
-Why trashy?
------------------
-
-The `rm` command doesn't account for human error. I like my UNIX to be
-responsive and obedient as much as anyone, but sometimes I make
-mistakes. Trashy offers a buffer between you and thermo nuclear war.
-
-Trashy is BASHy, meaning that it's really really portable; anything
-that can run BASH can run trashy. It can be installed easily on (and
-is actively used on) GNU Linux, freeBSD, and netBSD. It has also been
-tested on Solaris and Open Solaris families, and even Mac (obviously
-not Freedesktop-compliant, so features are missing) OS.
-
-It's simple, but it works well and it works on lots of systems.
-
-Similar projects do exist. The one I know about uses Python and has some
-really neat and fancy features. Check it out if you're on a Linux box
-or if you don't mind a bit of set-up on non Free Desktop UNIX systems.
-
-https://github.com/andreafrancia/trash-cli
-
 
 Bugs
 -----
