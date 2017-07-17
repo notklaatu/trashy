@@ -57,13 +57,13 @@ if [ "X$ARG" != "X" ]; then
     for waste in ${ARG[*]}; do
 	ORIGIN=$($REALPATH "${waste}")
 	if [ ! -z $RESTORE ]; then
-	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` | cut -d "=" -f2);
-	    /bin/rm -f $BASKET/info/`basename "${ORIGIN}".trashinfo`
+	    $ACT $VERBOSE "$BASKET/files/`basename ${ORIGIN}`" $(grep ${waste} $BASKET/info/`basename "${ORIGIN}".trashinfo` 2> /dev/null | cut -d "=" -f2) 2> /dev/null || echo "File not found in trash. Provide filename as it appears in the output of 'trash --list'"
+	    /bin/rm -f $BASKET/info/`basename "${ORIGIN}".trashinfo` 2> /dev/null
 	fi
     done
 else
-    echo "Restore what file?"
-    echo "Provide the name as it appears in the output of 'trash --list'"
+    echo "File not found in trash."
+    echo "Provide filename as it appears in the output of 'trash --list'"
 fi
 }
 
@@ -140,7 +140,7 @@ if [ "X$ARG" != "X" ]; then
 
 for c in $(seq 0 $((${#ARG[@]} - 1))) ;do
     waste=`echo "${ARG[$c]}"`
-    ORIGIN=$($REALPATH "${waste}")
+    ORIGIN=$($REALPATH "${waste}" 2> /dev/null) 
     COLLIDER=`basename "${waste}"`
 
     # check for leading dotslash
