@@ -68,7 +68,7 @@ fi
 }
 
 list() {
-    ls ${BASKET}/files
+    ls ${BASKET}/files -A
 }
 
 namechk() {
