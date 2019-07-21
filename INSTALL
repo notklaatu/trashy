@@ -1,71 +1,105 @@
-Install
-=======
+# Install trashy
 
 There are several ways to install trashy:
 
+## Autotools
 
-Generic
--------
+If you downloaded an official release of trashy, then on most POSIX systems, you can do this:
 
-On just about any POSIX system, run the install script included with
-the trashy source code.
+```
+$ ./configure
+$ make
+$ sudo make install
+```
 
-    $ sudo ./install.sh
+If you have obtained the source code for trashy from its Git repository, then you have to generate the Autotools files first:
+
+```
+$ autoreconf --install
+$ automake
+$ ./configure
+$ make
+$ sudo make install
+```
+
+### Packagers
+
+If you are packaging trashy for distribution, you probably want to do this:
+
+```
+$ make dist
+```
+
+That generates a tar.gz of only the necessary files for building and installing.
+You can use that tarball to create a package for your distribution or port tree.
 
 
-Manual
-------
+## Generic
 
-If that fails, the really simple and dirty method is to copy the
-trashy script into your PATH, such as ~/bin or /usr/local/bin, or
-whatever you have available to you.
+A generic install script is provided, but it requires some adaptation.
+You must define the VERSION and BASKET variables in the script (GNU Autotools usually does that), and you must gather ``trashy``,``trashy.8``,and ``install.sh`` in the same directory for it to be able to run to completion.
 
 
-Slackware
----------
+## Manual
 
-On Slackware Linux, run the SlackBuild script included with the trashy
-source code.
-
-    $ su -
-    # ./trashy.SlackBuild
+If that fails, you can manually install.
+You must define the VERSION and BASKET variables in the script (GNU Autotools usually does that).
+Then just copy the ``trashy`` script into your PATH, such as ``~/bin`` or ``/usr/local/bin``, or whatever you have available to you.
 
 
-RPM
----
+## Slackware
+
+On Slackware Linux, use the SlackBuild script included with the trashy source code.
+
+```
+$ su -
+# ./trashy.SlackBuild
+```
+
+## RPM
 
 If you use a distribution that uses RPMs, a package may be available
 at http://klaatu.fedorapeople.org/trashy
 
 
-Manual RPM
-----------
+### Manual RPM
 
 If not, build an RPM from the trashy.spec file included with the
 trashy source code. First, install the toolchain:
 
-    # dnf install rpmdevtools
+```
+# dnf install rpmdevtools
+```
 
 Set up the RPM environment:
 
-    $ pmdev-setuptree
+```
+$ pmdev-setuptree
+```
 
 Copy the SPEC file into your tree:
 
-    $ cp path/to/trashy.spec ~/rpmbuild/SPECS
+```
+$ cp path/to/trashy.spec ~/rpmbuild/SPECS
+```
 
-Place the source into your tree:
+Create a distribution package (.tar.gz) using ``make dist`` and then place that into your tree:
 
-    $ cp path/to/trashy-source.tar.bz2 ~/rpmbuild/SOURCES
+```
+$ cp path/to/trashy-x.y.z.tar.gz ~/rpmbuild/SOURCES
+```
 
 Build:
 
-    $ rpmbuild -ba ~/rpmbuild/SPECS/trashy.spec
+```
+$ rpmbuild -ba ~/rpmbuild/SPECS/trashy.spec
+```
 
 Install:
 
-    $ sudo dnf install ~/rpmbuild/RPMS/noarch/trash*rpm
-
+```
+$ sudo dnf install ~/rpmbuild/RPMS/noarch/trash*rpm
+```
 
 If you need help, don't hesitate to contact Klaatu at member.fsf.org
 or in irc.freenode.net (message 'notklaatu').

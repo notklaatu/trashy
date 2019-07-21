@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.2
+VERSION=__VERNUMVAR__
 # trash - the command line trashcan
 #
 # Copyright (C) 2011-17 Klaatu la Terible
@@ -18,13 +18,15 @@ VERSION=2.2
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# find the system trash
-case "$(uname | tr [:upper:] [:lower:] )" in
-    linux|bsd|sun) BASKET=~/.local/share/Trash ;;
-    darwin) BASKET=~/.Trash ;; # TODO check when around a mac
-    *) BASKET=~/.trash ;;
-esac
+# find the system trash without Autotools
+#case "$(uname | tr [:upper:] [:lower:] )" in
+#    linux|bsd|sun) BASKET=~/.local/share/Trash ;;
+#    darwin) BASKET=~/.Trash ;; # TODO check when around a mac
+#    *) BASKET=~/.trash ;;
+#esac
 
+# this is set by ./configure && make
+BASKET=__BASKETVAR__
 test -d $BASKET/info || mkdir -m 700 -p $BASKET/info 2> /dev/null
 test -d $BASKET/files || mkdir -m 700 -p $BASKET/files 2> /dev/null
 
