@@ -1,0 +1,22 @@
+image: centos
+ 
+before_script:
+  - dnf update
+  - dnf groupinstall -y development
+ 
+stages:
+  - build
+ 
+build:
+  stage: build
+  script:
+    - autoreconf --install
+    - automake
+    - ./configure
+    - make V=1 VERBOSE=1
+    - mkdir build
+    - make install DESTDIR=build
+ 
+  artifacts:
+    paths:
+    - build/*
