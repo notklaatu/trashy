@@ -16,7 +16,9 @@ build:
     - make V=1 VERBOSE=1
     - mkdir build
     - make install DESTDIR=build
+    - make dist
  
   artifacts:
     paths:
     - build/*
+    - *.tar.gz
