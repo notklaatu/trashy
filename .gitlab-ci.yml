@@ -1,12 +1,13 @@
+---
 image: centos
- 
+
 before_script:
   - dnf update
   - dnf groupinstall -y development
- 
+
 stages:
   - build
- 
+
 build:
   stage: build
   script:
@@ -17,8 +18,8 @@ build:
     - mkdir build
     - make install DESTDIR=build
     - make dist
- 
+
   artifacts:
     paths:
-    - build/*
-    - *.tar.gz
+      - build/*
+      - trashy*gz
