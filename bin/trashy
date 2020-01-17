@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=__VERNUMVAR__
+VERSION=2.4.2
 # trash - the command line trashcan
 #
 # Copyright (C) 2011-17 Klaatu la Terible
@@ -26,7 +26,7 @@ VERSION=__VERNUMVAR__
 #esac
 
 # this is set by ./configure && make
-BASKET=__BASKETVAR__
+BASKET=~/.local/share/Trash
 test -d $BASKET/info || mkdir -m 700 -p $BASKET/info 2> /dev/null
 test -d $BASKET/files || mkdir -m 700 -p $BASKET/files 2> /dev/null
 
