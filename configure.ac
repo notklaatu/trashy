@@ -1,4 +1,4 @@
-AC_INIT([trashy], [2.4.2], [klaatu@member.fsf.org])
+AC_INIT([trashy], [2.4.3], [klaatu@member.fsf.org])
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_CONFIG_FILES([Makefile])

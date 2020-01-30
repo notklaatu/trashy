@@ -146,7 +146,7 @@ for c in $(seq 0 $((${#ARG[@]} - 1))) ;do
     COLLIDER=`basename "${waste}"`
 
     # check for leading dotslash
-    LEADER=`echo "${waste}" | grep "\.\/"` || LEADER=""
+    LEADER=`echo "${waste}" | grep "^\.\/"` || LEADER=""
     if [ "${LEADER}" != "" ]; then 
 	waste=`echo "${waste}" | cut -b3-`
     fi
